@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, getLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Inter } from "next/font/google";
 import { locales, type Locale } from "@/i18n/config";
@@ -30,11 +30,12 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const currentLocale = await getLocale();
 
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={currentLocale} messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
