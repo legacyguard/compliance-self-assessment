@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +22,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 export default function RegisterPage() {
   const t = useTranslations("auth");
   const tc = useTranslations("common");
-  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -72,9 +71,9 @@ export default function RegisterPage() {
 
       // Redirect to dashboard or assessment if framework selected
       if (framework) {
-        router.push(`/${locale}/assessment/new?framework=${framework}`);
+        router.push(`/en/assessment/new?framework=${framework}`);
       } else {
-        router.push(`/${locale}/dashboard`);
+        router.push("/en/dashboard");
       }
       router.refresh();
     } catch {
@@ -174,7 +173,7 @@ export default function RegisterPage() {
         <p className="text-sm text-muted-foreground">
           {t("have_account")}{" "}
           <Link
-            href={`/${locale}/login`}
+            href="/en/login"
             className="text-primary hover:underline font-medium"
           >
             {t("sign_in")}

@@ -82,7 +82,9 @@ export async function GET(
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
     doc.text(`Generated: ${new Date().toLocaleDateString()}`, margin, 40);
-    doc.text(`Company: ${dbUser.company || "N/A"}`, margin, 48);
+    if (dbUser.company) {
+      doc.text(`Company: ${dbUser.company}`, margin, 48);
+    }
 
     // Overall Score
     doc.setFontSize(18);
@@ -142,7 +144,7 @@ export async function GET(
       for (let i = 0; i < Math.min(assessmentRecommendations.length, 5); i++) {
         const rec = assessmentRecommendations[i];
 
-        if (yPos > pageHeight - 60) {
+        if (yPos > pageHeight - 40) {
           doc.addPage();
           yPos = margin;
 
@@ -168,19 +170,15 @@ export async function GET(
       }
     }
 
-    // Footer with CTA
-    doc.setFontSize(10);
+    // Footer
+    doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 100, 100);
     doc.text(
-      "This is a FREE assessment report. Upgrade to EU Cyber Resilience Platform for detailed action plans.",
+      "Compliance Self-Assessment Report",
       margin,
-      pageHeight - 25
+      pageHeight - 15
     );
-    doc.setTextColor(0, 100, 200);
-    doc.textWithLink("Visit: kyberbezpecnost.cloud", margin, pageHeight - 15, {
-      url: "https://kyberbezpecnost.cloud",
-    });
 
     // Generate PDF buffer
     const pdfBuffer = Buffer.from(doc.output("arraybuffer"));

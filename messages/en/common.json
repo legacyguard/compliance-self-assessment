@@ -24,9 +24,6 @@
   "items": "items",
   "page": "Page",
   "previous": "Previous",
-  "footer_copyright": "© 2025 EU Cyber Resilience Platform. All rights reserved.",
-  "footer_cta": "Need comprehensive compliance management?",
-  "footer_cta_link": "Get the full platform",
-  "data_retention_notice": "Your data will be retained for 30 days",
-  "upgrade_cta": "Upgrade to keep your data permanently"
+  "footer_copyright": "© 2025 Compliance Self-Assessment. All rights reserved.",
+  "data_retention_notice": "Your data will be retained for 30 days"
 }

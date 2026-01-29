@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
-import { assessments, users, assessmentTemplates } from "@/lib/db/schema";
+import { assessments, users } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,12 +22,10 @@ import {
   AlertTriangle,
   Clock,
   CheckCircle2,
-  ExternalLink,
 } from "lucide-react";
 import { formatDate, formatScore, getScoreColor } from "@/lib/utils";
 
 export default async function DashboardPage() {
-  const locale = await getLocale();
   const t = await getTranslations("dashboard");
   const ta = await getTranslations("assessment");
   const tc = await getTranslations("common");
@@ -38,7 +36,7 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${locale}/login`);
+    redirect("/en/login");
   }
 
   // Get user from our database
@@ -92,7 +90,7 @@ export default async function DashboardPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href={`/${locale}/assessment/new`}>
+          <Link href="/en/assessment/new">
             <Plus className="h-4 w-4 mr-2" />
             {t("new_assessment")}
           </Link>
@@ -107,32 +105,10 @@ export default async function DashboardPage() {
             {t("data_expires_soon")}
           </AlertTitle>
           <AlertDescription className="text-yellow-700">
-            {daysUntilExpiry} {t("days_until_expiry")}. {t("upgrade_to_keep")}
+            {daysUntilExpiry} {t("days_until_expiry")}
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Upgrade Banner */}
-      <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-        <CardContent className="flex items-center justify-between py-6">
-          <div>
-            <h3 className="font-semibold text-lg">{t("upgrade_banner_title")}</h3>
-            <p className="text-muted-foreground">
-              {t("upgrade_banner_description")}
-            </p>
-          </div>
-          <Button asChild>
-            <a
-              href="https://kyberbezpecnost.cloud"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("upgrade_banner_cta")}
-              <ExternalLink className="h-4 w-4 ml-2" />
-            </a>
-          </Button>
-        </CardContent>
-      </Card>
 
       {/* Assessments Section */}
       <div>
@@ -140,7 +116,7 @@ export default async function DashboardPage() {
           <h2 className="text-xl font-semibold">{t("assessments_title")}</h2>
           {userAssessments.length > 0 && (
             <Link
-              href={`/${locale}/assessment`}
+              href="/en/assessment"
               className="text-sm text-primary hover:underline"
             >
               {t("view_all")}
@@ -159,7 +135,7 @@ export default async function DashboardPage() {
                 {ta("no_assessments_description")}
               </p>
               <Button asChild>
-                <Link href={`/${locale}/assessment/new`}>
+                <Link href="/en/assessment/new">
                   <Plus className="h-4 w-4 mr-2" />
                   {ta("start_assessment")}
                 </Link>
@@ -191,7 +167,7 @@ export default async function DashboardPage() {
                     {assessment.framework} Assessment
                   </CardTitle>
                   <CardDescription>
-                    {ta("created_at")}: {formatDate(assessment.createdAt, locale)}
+                    {ta("created_at")}: {formatDate(assessment.createdAt, "en")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -214,7 +190,7 @@ export default async function DashboardPage() {
                         className="h-2"
                       />
                       <Button variant="outline" className="w-full" asChild>
-                        <Link href={`/${locale}/assessment/${assessment.id}/results`}>
+                        <Link href={`/en/assessment/${assessment.id}/results`}>
                           {ta("view_details")}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Link>
@@ -222,7 +198,7 @@ export default async function DashboardPage() {
                     </div>
                   ) : (
                     <Button className="w-full" asChild>
-                      <Link href={`/${locale}/assessment/${assessment.id}`}>
+                      <Link href={`/en/assessment/${assessment.id}`}>
                         {ta("continue_assessment")}
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>

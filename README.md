@@ -1,13 +1,12 @@
 # Compliance Self-Assessment
 
-Free compliance self-assessment tool for NIS2, DORA, and AI Act regulations. Part of the EU Cyber Resilience Platform ecosystem.
+Free compliance self-assessment tool for NIS2, DORA, and AI Act regulations.
 
 ## Features
 
 - **Three Compliance Frameworks**: NIS2, DORA, AI Act
-- **Multi-language Support**: English, Slovak, Czech
 - **Instant Gap Analysis**: Automatic scoring and recommendations
-- **PDF Export**: Generate reports with watermark
+- **PDF Export**: Generate reports with assessment results
 - **30-Day Data Retention**: Free tier with time-limited storage
 
 ## Tech Stack
@@ -81,8 +80,4 @@ The cron job for cleanup runs daily at 3 AM UTC.
 
 ## License
 
-Proprietary - EU Cyber Resilience Platform
-
-## Related
-
-- [EU Cyber Resilience Platform](https://kyberbezpecnost.cloud) - Full compliance management platform
+MIT

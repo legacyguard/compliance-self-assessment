@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { getLocale } from "next-intl/server";
 import {
   Shield,
   FileSearch,
@@ -15,13 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-export default async function LandingPage() {
-  const locale = await getLocale();
-
-  return <LandingPageContent locale={locale} />;
+export default function LandingPage() {
+  return <LandingPageContent />;
 }
 
-function LandingPageContent({ locale }: { locale: string }) {
+function LandingPageContent() {
   const t = useTranslations("landing");
 
   const frameworks = [
@@ -87,7 +84,7 @@ function LandingPageContent({ locale }: { locale: string }) {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <Link href={`/${locale}/register`}>
+                <Link href="/en/register">
                   {t("hero_cta")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -168,7 +165,7 @@ function LandingPageContent({ locale }: { locale: string }) {
                     </span>
                   </div>
                   <Button className="w-full" asChild>
-                    <Link href={`/${locale}/register?framework=${framework.id}`}>
+                    <Link href={`/en/register?framework=${framework.id}`}>
                       {t("hero_cta")}
                     </Link>
                   </Button>
@@ -186,7 +183,7 @@ function LandingPageContent({ locale }: { locale: string }) {
             <h2 className="text-3xl font-bold mb-4">{t("cta_title")}</h2>
             <p className="text-xl mb-8 opacity-90">{t("cta_description")}</p>
             <Button size="lg" variant="secondary" asChild>
-              <Link href={`/${locale}/register`}>
+              <Link href="/en/register">
                 {t("cta_button")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ArrowRight,
@@ -38,9 +38,9 @@ interface AssessmentData {
 export default function AssessmentWizardPage({
   params,
 }: {
-  params: Promise<{ id: string; locale: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { id, locale } = use(params);
+  const { id } = use(params);
   const t = useTranslations("assessment");
   const router = useRouter();
 
@@ -88,7 +88,7 @@ export default function AssessmentWizardPage({
         <Button
           variant="outline"
           className="mt-4"
-          onClick={() => router.push(`/${locale}/dashboard`)}
+          onClick={() => router.push("/en/dashboard")}
         >
           Back to Dashboard
         </Button>
@@ -110,10 +110,6 @@ export default function AssessmentWizardPage({
 
   const questionKey = `${currentCategory.key}_${currentQuestion.key}`;
   const currentAnswer = answers[questionKey];
-
-  const getLocalizedText = (text: { en: string; sk: string; cz: string }) => {
-    return text[locale as keyof typeof text] || text.en;
-  };
 
   const handleAnswer = (optionIndex: number) => {
     const option = currentQuestion.options[optionIndex];
@@ -171,7 +167,7 @@ export default function AssessmentWizardPage({
         throw new Error("Failed to complete assessment");
       }
 
-      router.push(`/${locale}/assessment/${id}/results`);
+      router.push(`/en/assessment/${id}/results`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to complete assessment");
     } finally {
@@ -228,7 +224,7 @@ export default function AssessmentWizardPage({
             {index < currentCategoryIndex && (
               <CheckCircle className="h-4 w-4 inline mr-1" />
             )}
-            {getLocalizedText(category.title)}
+            {category.title.en}
           </button>
         ))}
       </div>
@@ -239,16 +235,16 @@ export default function AssessmentWizardPage({
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
             <span>{t("category")}:</span>
             <span className="font-medium text-foreground">
-              {getLocalizedText(currentCategory.title)}
+              {currentCategory.title.en}
             </span>
           </div>
           <CardTitle className="text-xl">
-            {getLocalizedText(currentQuestion.question)}
+            {currentQuestion.question.en}
           </CardTitle>
           {currentQuestion.helpText && (
             <CardDescription className="flex items-start gap-2 mt-2">
               <HelpCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
-              {getLocalizedText(currentQuestion.helpText)}
+              {currentQuestion.helpText.en}
             </CardDescription>
           )}
         </CardHeader>
@@ -273,7 +269,7 @@ export default function AssessmentWizardPage({
                   htmlFor={`option-${index}`}
                   className="flex-1 cursor-pointer"
                 >
-                  {getLocalizedText(option.label)}
+                  {option.label.en}
                 </Label>
               </div>
             ))}

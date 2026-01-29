@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
@@ -18,7 +18,6 @@ import { Plus, ArrowRight, FileText } from "lucide-react";
 import { formatDate, formatScore, getScoreColor } from "@/lib/utils";
 
 export default async function AssessmentListPage() {
-  const locale = await getLocale();
   const t = await getTranslations("assessment");
 
   const supabase = await createClient();
@@ -27,7 +26,7 @@ export default async function AssessmentListPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${locale}/login`);
+    redirect("/en/login");
   }
 
   const dbUser = await db.query.users.findFirst({
@@ -35,7 +34,7 @@ export default async function AssessmentListPage() {
   });
 
   if (!dbUser) {
-    redirect(`/${locale}/dashboard`);
+    redirect("/en/dashboard");
   }
 
   const userAssessments = await db.query.assessments.findMany({
@@ -53,7 +52,7 @@ export default async function AssessmentListPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href={`/${locale}/assessment/new`}>
+          <Link href="/en/assessment/new">
             <Plus className="h-4 w-4 mr-2" />
             {t("start_assessment")}
           </Link>
@@ -69,7 +68,7 @@ export default async function AssessmentListPage() {
               {t("no_assessments_description")}
             </p>
             <Button asChild>
-              <Link href={`/${locale}/assessment/new`}>
+              <Link href="/en/assessment/new">
                 <Plus className="h-4 w-4 mr-2" />
                 {t("start_assessment")}
               </Link>
@@ -101,7 +100,7 @@ export default async function AssessmentListPage() {
                   {assessment.framework.replace("_", " ")} Assessment
                 </CardTitle>
                 <CardDescription>
-                  {t("created_at")}: {formatDate(assessment.createdAt, locale)}
+                  {t("created_at")}: {formatDate(assessment.createdAt, "en")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -125,7 +124,7 @@ export default async function AssessmentListPage() {
                       className="h-2"
                     />
                     <Button variant="outline" className="w-full" asChild>
-                      <Link href={`/${locale}/assessment/${assessment.id}/results`}>
+                      <Link href={`/en/assessment/${assessment.id}/results`}>
                         {t("view_details")}
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Link>
@@ -133,7 +132,7 @@ export default async function AssessmentListPage() {
                   </div>
                 ) : (
                   <Button className="w-full" asChild>
-                    <Link href={`/${locale}/assessment/${assessment.id}`}>
+                    <Link href={`/en/assessment/${assessment.id}`}>
                       {t("continue_assessment")}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Link>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import {
   Building2,
@@ -53,7 +53,6 @@ const frameworks: {
 export default function NewAssessmentPage() {
   const t = useTranslations("assessment");
   const tl = useTranslations("landing");
-  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -86,7 +85,7 @@ export default function NewAssessmentPage() {
       }
 
       const data = await response.json();
-      router.push(`/${locale}/assessment/${data.data.id}`);
+      router.push(`/en/assessment/${data.data.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       setLoading(false);
@@ -183,7 +182,7 @@ export default function NewAssessmentPage() {
 
       <div className="flex items-center justify-center gap-4">
         <Button variant="outline" asChild>
-          <Link href={`/${locale}/dashboard`}>Cancel</Link>
+          <Link href="/en/dashboard">Cancel</Link>
         </Button>
         <Button
           size="lg"

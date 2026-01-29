@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
@@ -14,14 +14,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Download,
   Plus,
-  ExternalLink,
-  AlertTriangle,
   CheckCircle,
-  ArrowRight,
 } from "lucide-react";
 import { DonutChart } from "@/components/assessment/DonutChart";
 import { formatScore, getScoreColor } from "@/lib/utils";
@@ -33,7 +29,7 @@ export default async function AssessmentResultsPage({
 }: {
   params: Promise<{ id: string; locale: string }>;
 }) {
-  const { id, locale } = await params;
+  const { id } = await params;
   const t = await getTranslations("assessment");
   const td = await getTranslations("dashboard");
 
@@ -43,7 +39,7 @@ export default async function AssessmentResultsPage({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${locale}/login`);
+    redirect("/en/login");
   }
 
   const dbUser = await db.query.users.findFirst({
@@ -51,7 +47,7 @@ export default async function AssessmentResultsPage({
   });
 
   if (!dbUser) {
-    redirect(`/${locale}/dashboard`);
+    redirect("/en/dashboard");
   }
 
   const assessment = await db.query.assessments.findFirst({
@@ -59,11 +55,11 @@ export default async function AssessmentResultsPage({
   });
 
   if (!assessment) {
-    redirect(`/${locale}/dashboard`);
+    redirect("/en/dashboard");
   }
 
   if (assessment.status !== "completed") {
-    redirect(`/${locale}/assessment/${id}`);
+    redirect(`/en/assessment/${id}`);
   }
 
   const assessmentRecommendations = await db.query.recommendations.findMany({
@@ -74,10 +70,6 @@ export default async function AssessmentResultsPage({
   const framework = assessment.framework as Framework;
   const template = templates[framework];
   const categoryScores = (assessment.categoryScores as Record<string, number>) || {};
-
-  const getLocalizedText = (obj: { en: string; sk: string; cz: string }) => {
-    return obj[locale as keyof typeof obj] || obj.en;
-  };
 
   const getStatusLabel = (score: number) => {
     if (score >= 0.8) return { label: td("status_compliant"), color: "text-green-600" };
@@ -143,7 +135,7 @@ export default async function AssessmentResultsPage({
                 <div key={category.key} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-medium">
-                      {getLocalizedText(category.title)}
+                      {category.title.en}
                     </span>
                     <span className={`font-bold ${getScoreColor(score)}`}>
                       {formatScore(score)}
@@ -177,19 +169,9 @@ export default async function AssessmentResultsPage({
                     {index + 1}
                   </div>
                   <div>
-                    <h4 className="font-medium">
-                      {locale === "sk"
-                        ? rec.titleSk
-                        : locale === "cz"
-                        ? rec.titleCz
-                        : rec.titleEn}
-                    </h4>
+                    <h4 className="font-medium">{rec.titleEn}</h4>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {locale === "sk"
-                        ? rec.descriptionSk
-                        : locale === "cz"
-                        ? rec.descriptionCz
-                        : rec.descriptionEn}
+                      {rec.descriptionEn}
                     </p>
                   </div>
                 </div>
@@ -198,28 +180,6 @@ export default async function AssessmentResultsPage({
           </CardContent>
         </Card>
       )}
-
-      {/* Upgrade Banner */}
-      <Alert className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-        <AlertTriangle className="h-4 w-4 text-primary" />
-        <AlertTitle>{t("upgrade_banner")}</AlertTitle>
-        <AlertDescription className="mt-2">
-          <p className="mb-4">
-            Get detailed action plans, expert recommendations, continuous monitoring,
-            and incident response capabilities with the full platform.
-          </p>
-          <Button asChild>
-            <a
-              href="https://kyberbezpecnost.cloud"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("upgrade_banner_cta")}
-              <ExternalLink className="h-4 w-4 ml-2" />
-            </a>
-          </Button>
-        </AlertDescription>
-      </Alert>
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -230,7 +190,7 @@ export default async function AssessmentResultsPage({
           </a>
         </Button>
         <Button asChild>
-          <Link href={`/${locale}/assessment/new`}>
+          <Link href="/en/assessment/new">
             <Plus className="h-4 w-4 mr-2" />
             {t("start_new")}
           </Link>

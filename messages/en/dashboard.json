@@ -17,10 +17,6 @@
   "complete_assessment_cta": "Complete an assessment to see your compliance status",
   "days_until_expiry": "days until data expires",
   "data_expires_soon": "Your data expires soon",
-  "upgrade_to_keep": "Upgrade to keep your assessments permanently",
-  "upgrade_banner_title": "Get More from Your Assessment",
-  "upgrade_banner_description": "Access detailed action plans, expert recommendations, and continuous monitoring with the full platform.",
-  "upgrade_banner_cta": "Explore Full Platform",
   "framework_score": "{framework} Score",
   "last_assessment": "Last assessment: {date}",
   "logout": "Sign Out"

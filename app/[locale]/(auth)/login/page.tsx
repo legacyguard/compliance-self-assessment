@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,6 @@ import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
-  const locale = useLocale();
   const router = useRouter();
   const supabase = createClient();
 
@@ -46,7 +45,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push(`/${locale}/dashboard`);
+      router.push("/en/dashboard");
       router.refresh();
     } catch {
       setError(t("invalid_credentials"));
@@ -100,16 +99,10 @@ export default function LoginPage() {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <Link
-          href={`/${locale}/forgot-password`}
-          className="text-sm text-muted-foreground hover:text-primary"
-        >
-          {t("forgot_password")}
-        </Link>
         <p className="text-sm text-muted-foreground">
           {t("no_account")}{" "}
           <Link
-            href={`/${locale}/register`}
+            href="/en/register"
             className="text-primary hover:underline font-medium"
           >
             {t("sign_up")}
