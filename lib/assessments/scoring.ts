@@ -101,12 +101,12 @@ export function generateRecommendations(
   }
 
   let priority = 1;
-  for (const [categoryKey, catGaps] of categoryGaps) {
+  for (const [categoryKey, catGaps] of Array.from(categoryGaps.entries())) {
     const category = template.categories.find((c) => c.key === categoryKey);
     if (!category) continue;
 
     const avgScore =
-      catGaps.reduce((sum, g) => sum + g.score, 0) / catGaps.length;
+      catGaps.reduce((sum: number, g: Gap) => sum + g.score, 0) / catGaps.length;
 
     recommendations.push({
       categoryKey,
